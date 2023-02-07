@@ -13,17 +13,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-app.use(function (req, res, next) {
-  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+//   next();
+// });
 
-const corsOptions = {
-  origin: "https://example.com",
-  optionsSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: "https://nutriplanapi-production.up.railway.app/",
+//   optionsSuccessStatus: 200,
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 //Open AI config
 const { Configuration, OpenAIApi } = OpenAi;
