@@ -1,10 +1,7 @@
 const OpenAi = require("openai");
-const { Configuration, OpenAIApi } = OpenAi;
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const nodemailer = require("nodemailer");
 
 //Configuration
@@ -14,8 +11,10 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(cors());
+
+//Open AI config
+const { Configuration, OpenAIApi } = OpenAi;
 
 const configuration = new Configuration({
   organization: "org-ZiSgZLZon8TWasqR2tk6H2oU",
@@ -24,6 +23,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+//Generate meal plan
 app.post("/createMealPlan", async (req, res) => {
   try {
     const {
@@ -108,6 +108,7 @@ app.post("/createMealPlan", async (req, res) => {
   }
 });
 
+// Send meal plan as email
 app.post("/emailSubmit", async (req, res) => {
   try {
     const { data, email } = req.body;
@@ -121,16 +122,16 @@ app.post("/emailSubmit", async (req, res) => {
     let transporter = nodemailer.createTransport({
       service: "hotmail",
       auth: {
-        user: process.env.EMAIL, // generated ethereal user
-        pass: process.env.PASSWORD, // generated ethereal password
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
       },
     });
 
     // send mail with defined transport object
     await transporter.sendMail({
-      from: process.env.EMAIL, // sender address
-      to: email, // list of receivers
-      subject: "Here is your meal plan!", // Subject line
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Here is your meal plan!",
       html: `<!DOCTYPE html>
               <html lang="en">
               <head>
@@ -153,13 +154,13 @@ app.post("/emailSubmit", async (req, res) => {
                         Your Meal Plan!
                       </p>
                       ${arrayItems}
-                      <p style="font-weight: 600; font-size: 1rem; margin-top:30px; padding: 0 30px">Thank you for using NutriPlan.ai!</p>
+                      <p style="font-weight: 600; font-size: 1rem; margin-top:30px; padding: 0 30px">Thank you for using NutriPlan!</p>
                       </div>
                     </div>
                   </div>
                 </div>         
               </body>
-              </html>`, // html body
+              </html>`,
     });
     res.send({
       message: "Success",
@@ -170,8 +171,4 @@ app.post("/emailSubmit", async (req, res) => {
       message: error.message,
     });
   }
-});
-
-app.listen(port, () => {
-  console.log(`Listening on http://localhost:${port}!`);
 });
