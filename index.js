@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 //Configuration
 require("dotenv").config();
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,6 +17,13 @@ app.use(function (req, res, next) {
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   next();
 });
+
+const corsOptions = {
+  origin: "https://example.com",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 //Open AI config
 const { Configuration, OpenAIApi } = OpenAi;
@@ -177,3 +184,5 @@ app.post("/emailSubmit", async (req, res) => {
     });
   }
 });
+
+app.listen(port, () => console.log(`Listening on: ${port}`));
