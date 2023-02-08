@@ -73,15 +73,15 @@ app.post("/createMealPlan", async (req, res) => {
             ? `Can you make me a ${selectedPlan} meal plan strictly based on the amount of calories${
                 dailyProteinIntake && ` and protein`
               } I need per day. This plan should include breakfast, lunch and dinner and can also include snacking as well.
+            Can the plan include the calorie ${
+              dailyProteinIntake && `and protein`
+            } amounts for each meal.
           Can you make the meal plan as healthy as possible.
           Start your response with "Here is" followed by a brief description of what the meal is and the which includes the name of the meal and the calorie ${
             dailyProteinIntake && ` and ${dailyProteinIntake}`
           } contents. This should be followed the necessary ingredients in bullet point format.
               This should be followed by step by step instructions on how to cook the meal also in bullet point format.
-              Conclude the plan with the total calories ${
-                dailyProteinIntake && ` and ${dailyProteinIntake}`
-              } of the meals combined and 
-             some pleasantries but do not ask if I need any more questions or any further help.`
+              Conclude the plan with some pleasantries but do not ask if I need any more questions or any further help.`
             : ""
         }
 
