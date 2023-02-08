@@ -78,7 +78,10 @@ app.post("/createMealPlan", async (req, res) => {
             dailyProteinIntake && ` and ${dailyProteinIntake}`
           } contents. This should be followed the necessary ingredients in bullet point format.
               This should be followed by step by step instructions on how to cook the meal also in bullet point format.
-              Conclude the plan with some pleasantries but do not ask if I need any more questions or any further help.`
+              Conclude the plan with the total calories ${
+                dailyProteinIntake && ` and ${dailyProteinIntake}`
+              } of the meals combined and 
+             some pleasantries but do not ask if I need any more questions or any further help.`
             : ""
         }
 
