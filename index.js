@@ -13,18 +13,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-// app.use(function (req, res, next) {
-//   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-//   next();
-// });
-
-// const corsOptions = {
-//   origin: "https://nutriplanapi-production.up.railway.app/",
-//   optionsSuccessStatus: 200,
-// };
-
-// app.use(cors(corsOptions));
-
 //Open AI config
 const { Configuration, OpenAIApi } = OpenAi;
 
@@ -47,8 +35,6 @@ app.post("/createMealPlan", async (req, res) => {
       selectedPlan,
       dietaryPreferences,
     } = req.body;
-
-    const { prompt } = req.body;
 
     const response = await openai.createCompletion({
       model: "text-davinci-003",
@@ -87,15 +73,12 @@ app.post("/createMealPlan", async (req, res) => {
             ? `Can you make me a ${selectedPlan} meal plan strictly based on the amount of calories${
                 dailyProteinIntake && ` and protein`
               } I need per day. This plan should include breakfast, lunch and dinner and can also include snacking as well.
-            Can the plan include the calorie ${
-              dailyProteinIntake && `and protein`
-            } amounts for each meal.
           Can you make the meal plan as healthy as possible.
-          Start your response with "Here is your healthy and delicions meal plan" followed by the name of the meal followed by ingredients in bullet point format.
-          Can the last bullet point be the total calories ${
-            dailyProteinIntake && `and protein`
-          } for the plan per day.
-      `
+          Start your response with "Here is" followed by a brief description of what the meal is and the which includes the name of the meal and the calorie ${
+            dailyProteinIntake && ` and ${dailyProteinIntake}`
+          } contents. This should be followed the necessary ingredients in bullet point format.
+              This should be followed by step by step instructions on how to cook the meal also in bullet point format.
+              Conclude the plan with some pleasantries but do not ask if I need any more questions or any further help.`
             : ""
         }
 
@@ -139,7 +122,7 @@ app.post("/emailSubmit", async (req, res) => {
       },
     });
 
-    // send mail with defined transport object
+    // Send mail with defined transport object
     await transporter.sendMail({
       from: process.env.EMAIL,
       to: email,
