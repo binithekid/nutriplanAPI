@@ -17,7 +17,7 @@ app.use(cors());
 const { Configuration, OpenAIApi } = OpenAi;
 
 const configuration = new Configuration({
-  organization: "org-ZiSgZLZon8TWasqR2tk6H2oU",
+  organization: "org-vX5zvLjDK7nVv39z86OpKhva",
   apiKey: process.env.OPENAI_API_KEY,
 });
 
