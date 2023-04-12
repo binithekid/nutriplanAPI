@@ -17,11 +17,29 @@ app.use(cors());
 const { Configuration, OpenAIApi } = OpenAi;
 
 const configuration = new Configuration({
-  organization: "org-vX5zvLjDK7nVv39z86OpKhva",
+  organization: "org-ZiSgZLZon8TWasqR2tk6H2oU",
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
+
+app.get("/", async (req, res) => {
+  res.status(200).send({
+    message: "Hello World",
+  });
+});
+
+app.post("/hello", async (req, res) => {
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `What is the capital of England?`,
+    max_tokens: 800,
+    temperature: 0.7,
+  });
+  res.status(200).send({
+    message: response.data.choices[0].text,
+  });
+});
 
 //Generate meal plan
 app.post("/createMealPlan", async (req, res) => {
